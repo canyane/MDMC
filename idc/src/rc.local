@@ -1,0 +1,26 @@
+#!/bin/bash
+# THIS FILE IS ADDED FOR COMPATIBILITY PURPOSES
+#
+# It is highly advisable to create own systemd services or udev rules
+# to run scripts during boot instead of using this file.
+#
+# In contrast to previous versions due to parallel execution during boot
+# this script will NOT be run after all other services.
+#
+# Please note that you must run 'chmod +x /etc/rc.d/rc.local' to ensure
+# that this script will be executed during boot.
+
+touch /var/lock/subsys/local
+
+# 启动守护程序，检查服务程序是否超时
+/home/ubuntu/MDMC/project/tools/bin/procctl 30 /home/ubuntu/MDMC/project/tools/bin/checkproc /home/ubuntu/MDMC/project/idc/log/checkproc.log
+
+# 启动数据中心的后台服务程序
+su - carlyim -c "/bin/sh /home/ubuntu/MDMC/project/idc/c/start.sh"
+
+# 启动mysql数据库(执行命令mysql -u root -pyc19991014.)
+#/usr/local/mysql/support-files/mysql.server start
+
+# 启动网络代理程序
+#/home/ubuntu/MDMC/project/tools/bin/procctl 10 /home/ubuntu/MDMC/project/tools/bin/rinetd
+
